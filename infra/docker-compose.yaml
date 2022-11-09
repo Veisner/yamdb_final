@@ -8,9 +8,10 @@ services:
     env_file:
       - ./.env
   web:
-    build:
-      context: ../api_yamdb/
-      dockerfile: Dockerfile
+    image: veisner/yamdb_final:latest
+#     build:
+#       context: ../api_yamdb/
+#       dockerfile: Dockerfile
     restart: always
     volumes:
       - static_value:/app/static/

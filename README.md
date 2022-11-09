@@ -1,3 +1,5 @@
+https://github.com/Veisner/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg
+
 # Проект YaMDb
 
 REST API для сервиса YaMDb — база отзывов о фильмах, книгах и музыке.
