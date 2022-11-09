@@ -102,8 +102,7 @@ class ReviewViewSet(ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
     def get_title(self):
-        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
-        return title
+        return get_object_or_404(Title, pk=self.kwargs.get('title_id'))
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, title=self.get_title())
@@ -120,12 +119,11 @@ class CommentViewSet(ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
     def get_review(self):
-        review = get_object_or_404(
+        return get_object_or_404(
             Review,
             pk=self.kwargs.get('review_id'),
             title_id=self.kwargs.get('title_id'),
         )
-        return review
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, review=self.get_review())
