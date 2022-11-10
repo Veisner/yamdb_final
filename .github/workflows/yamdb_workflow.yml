@@ -19,10 +19,13 @@ jobs:
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
         pip install -r api_yamdb/requirements.txt 
 
-    - name: Test with flake8 and django tests
+    - name: Test with flake8
       run: |
         # проверка Flake8
         python -m flake8
+
+    - name: Django tests
+      run: |
         # проверка Pytest
         pytest
   build_and_push_to_docker_hub:
@@ -62,9 +65,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
+            # Pull последней версии проекта
             sudo docker pull veisner/yamdb_final:latest
+            # остановка и удаление прошлой версии
             sudo docker compose stop
             sudo docker compose rm web
+            # создание и заполнение файла .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -72,8 +78,10 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            # запуск новой версии проекта
             sudo docker compose up -d
-            sudo docker image prune
+            # удаление старых образов
+            sudo docker image rm veisner/yamdb_final:latest
   send_message:
     runs-on: ubuntu-latest
     needs: deploy
